@@ -5,7 +5,7 @@ import '../features/auth/screens/login_screen.dart';
 import '../features/auth/services/auth_service.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
-import '../features/rank/screens/rank_screen.dart';
+import '../features/rank/screens/leaderboard_screen.dart';
 import '../features/policies/screens/policies_screen.dart';
 import 'main_shell.dart';
 
@@ -42,7 +42,7 @@ class AppRouter {
           StatefulShellBranch(routes: [
             GoRoute(
               path: AppConstants.routeRank,
-              builder: (context, state) => const RankScreen(),
+              builder: (context, state) => const LeaderboardScreen(),
             ),
           ]),
           StatefulShellBranch(routes: [

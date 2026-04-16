@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_group3/app.dart';
 import '../core/constants/app_constants.dart';
 
 class MainShell extends StatelessWidget {
@@ -11,6 +12,7 @@ class MainShell extends StatelessWidget {
     AppConstants.routeDashboard,
     AppConstants.routeRank,
     AppConstants.routePolicies,
+    AppConstants.routeStats,
     AppConstants.routeProfile,
   ];
 
@@ -40,6 +42,11 @@ class MainShell extends StatelessWidget {
             icon: Icon(Icons.policy_outlined),
             activeIcon: Icon(Icons.policy),
             label: 'Policies',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bar_chart_outlined), 
+            activeIcon: Icon(Icons.bar_chart), 
+            label: 'Stats',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),

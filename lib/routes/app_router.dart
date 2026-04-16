@@ -7,6 +7,7 @@ import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/rank/screens/leaderboard_screen.dart';
 import '../features/policies/screens/policies_screen.dart';
+import '../features/stat/screens/stat_screen.dart';
 import 'main_shell.dart';
 
 class AppRouter {
@@ -49,6 +50,12 @@ class AppRouter {
             GoRoute(
               path: AppConstants.routePolicies,
               builder: (context, state) => const PoliciesScreen(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppConstants.routeStats,
+              builder: (context, state) => const StatScreen(), // Gọi màn hình Stat của bạn
             ),
           ]),
           StatefulShellBranch(routes: [

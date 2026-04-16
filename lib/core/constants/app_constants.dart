@@ -17,4 +17,5 @@ class AppConstants {
   static const String routeProfile = '/profile';
   static const String routeRank = '/rank';
   static const String routePolicies = '/policies';
+  static const String routeStats = '/stats';
 }

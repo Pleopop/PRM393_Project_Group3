@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/leaderboard_model.dart';
-// import '../../../core/api/api_client.dart'; // Mở ra khi bạn có api_client thực tế
+// import '../../../core/api/api_client.dart'; 
 
 class LeaderboardService {
-  // Thay url này bằng đường dẫn thực tế đến API ASP.NET Core của bạn
   final String _apiUrl = 'https://localhost:5001/api/leaderboard';
 
   Future<LeaderboardVM> fetchLeaderboardData() async {
@@ -18,7 +17,7 @@ class LeaderboardService {
         throw Exception('Lỗi Server: ${response.statusCode}');
       }
     } catch (e) {
-      // TẠM THỜI MOCK DATA ĐỂ BẠN TEST GIAO DIỆN (Xóa đoạn này khi nối API thật)
+      // MOCK DATA ĐỂ TEST GIAO DIỆN (Xóa đoạn này khi nối API thật)
       await Future.delayed(const Duration(seconds: 1)); // Giả lập mạng chậm 1s
       return LeaderboardVM(
         totalHours: 1250.5, avgHours: 4.2, memberCount: 156,

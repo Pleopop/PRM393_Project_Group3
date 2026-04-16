@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'; // Chỉ giữ lại Riverpod, xóa bỏ provider cũ
+import 'package:flutter_riverpod/flutter_riverpod.dart'; 
 
 import '../../../core/theme/app_theme.dart';
 import '../providers/leaderboard_provider.dart';
@@ -8,8 +8,7 @@ import '../models/leaderboard_model.dart';
 import '../widgets/stat_card.dart';
 import '../widgets/leaderboard_header.dart';
 import '../widgets/leaderboard_row_item.dart';
-import '../widgets/top5section.dart'; // Đảm bảo tên file này khớp với máy bạn nhé
-
+import '../widgets/top5section.dart'; 
 class LeaderboardScreen extends ConsumerStatefulWidget {
   const LeaderboardScreen({Key? key}) : super(key: key);
 
@@ -22,14 +21,12 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // 1. SỬA Ở ĐÂY: Dùng ref.read thay vì context.read
       ref.read(leaderboardProvider).loadData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // 2. SỬA Ở ĐÂY: Dùng ref.watch để lấy dữ liệu (không cần nhét vào Builder nữa)
     final provider = ref.watch(leaderboardProvider);
 
     return Scaffold(
@@ -40,7 +37,6 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
         elevation: 0,
       ),
       
-      // Tách phần giao diện chính ra một hàm cho mượt
       body: _buildBody(provider), 
     );
   }

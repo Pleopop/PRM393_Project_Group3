@@ -16,7 +16,7 @@ class LeaderboardProvider extends ChangeNotifier {
     notifyListeners(); // Báo UI hiện icon loading
 
     try {
-      data = await _service.fetchLeaderboardData();
+      // data = await _service.fetchLeaderboardData();
     } catch (e) {
       error = e.toString();
     } finally {

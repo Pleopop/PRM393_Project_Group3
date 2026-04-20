@@ -55,10 +55,19 @@ class LeaderboardRowItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: user.isMe ? p1.withOpacity(0.2) : Colors.white.withOpacity(0.05),
+                    // Hiển thị ảnh Discord nếu có URL
+                    image: (user.avatarUrl != null && user.avatarUrl!.isNotEmpty)
+                        ? DecorationImage(
+                            image: NetworkImage(user.avatarUrl!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
-                  child: Text(getInitials(user.name), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: user.isMe ? p1 : Colors.white70)),
+                  // Nếu KHÔNG có ảnh thì mới hiện chữ cái đầu
+                  child: (user.avatarUrl == null || user.avatarUrl!.isEmpty)
+                      ? Text(getInitials(user.name), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: user.isMe ? p1 : Colors.white70))
+                      : null,
                 ),
-                const SizedBox(width: 12),
                 
                 // Tên người dùng
                 Expanded(

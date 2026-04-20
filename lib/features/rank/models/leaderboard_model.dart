@@ -4,24 +4,27 @@ class LeaderboardMember {
   final double hours;
   final int rank;
   final int changeRank;
-  final String trend; 
+  final String trend;
   final bool isMe;
+  final String? avatarUrl;
 
   LeaderboardMember({
-    required this.id, required this.name, required this.hours, 
-    required this.rank, required this.changeRank, 
-    required this.trend, this.isMe = false,
+    required this.id, required this.name, required this.hours, required this.rank,
+    required this.changeRank, required this.trend, this.isMe = false, this.avatarUrl,
   });
 
   factory LeaderboardMember.fromJson(Map<String, dynamic> json) {
+    int seconds = json['totalSeconds'] ?? 0;
+    
     return LeaderboardMember(
-      id: json['id'].toString(),
-      name: json['name'],
-      hours: (json['hours'] as num).toDouble(),
-      rank: json['rank'],
-      changeRank: json['changeRank'],
-      trend: json['trend'],
-      isMe: json['isMe'] ?? false,
+      id: json['userId']?.toString() ?? '',
+      name: json['username'] ?? 'Unknown',
+      hours: seconds / 3600.0,
+      rank: json['rank'] ?? 0,
+      changeRank: json['changeRank'] ?? 0,
+      trend: (json['changeRank'] ?? 0) >= 0 ? 'up' : 'down',
+      isMe: false, 
+      avatarUrl: json['avatarUrl'],
     );
   }
 }
@@ -34,16 +37,21 @@ class LeaderboardVM {
 
   LeaderboardVM({
     required this.rows, required this.totalHours, 
-    required this.avgHours, required this.memberCount,
+    required this.avgHours, required this.memberCount
   });
 
   factory LeaderboardVM.fromJson(Map<String, dynamic> json) {
-    var list = json['rows'] as List;
+    var rowsList = json['rows'] as List? ?? [];
+    List<LeaderboardMember> parsedRows = rowsList.map((i) => LeaderboardMember.fromJson(i)).toList();
+
+    double total = parsedRows.fold(0, (sum, item) => sum + item.hours);
+    double avg = parsedRows.isNotEmpty ? (total / parsedRows.length) : 0;
+
     return LeaderboardVM(
-      rows: list.map((i) => LeaderboardMember.fromJson(i)).toList(),
-      totalHours: (json['totalHours'] as num).toDouble(),
-      avgHours: (json['avgHours'] as num).toDouble(),
-      memberCount: json['memberCount'],
+      rows: parsedRows,
+      totalHours: total,
+      avgHours: avg,
+      memberCount: parsedRows.length,
     );
   }
 }

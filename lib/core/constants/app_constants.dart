@@ -2,7 +2,9 @@ class AppConstants {
   AppConstants._();
 
   // API
-  static const String baseUrl = 'http://localhost:3000';
+  // static const String baseUrl = 'https://192.168.1.11:8080'; // test on true device
+  static const String baseUrl = 'https://localhost:8080';
+
   static const Duration connectTimeout = Duration(seconds: 10);
   static const Duration receiveTimeout = Duration(seconds: 15);
 
@@ -18,4 +20,5 @@ class AppConstants {
   static const String routeRank = '/rank';
   static const String routePolicies = '/policies';
   static const String routeStats = '/stats';
+
 }

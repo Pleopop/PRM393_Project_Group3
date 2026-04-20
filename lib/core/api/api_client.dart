@@ -1,9 +1,21 @@
+
+import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart'; 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constants/app_constants.dart';
 
 class ApiClient {
-  ApiClient._internal();
+  ApiClient._internal() {
+    dio.httpClientAdapter = IOHttpClientAdapter(
+      createHttpClient: () {
+        final client = HttpClient();
+        client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+        return client;
+      },
+    );
+  }
+  
   static final ApiClient _instance = ApiClient._internal();
   factory ApiClient() => _instance;
 
@@ -11,7 +23,7 @@ class ApiClient {
 
   late final Dio dio = Dio(
     BaseOptions(
-      baseUrl: AppConstants.baseUrl,
+      baseUrl: AppConstants.baseUrl, 
       connectTimeout: AppConstants.connectTimeout,
       receiveTimeout: AppConstants.receiveTimeout,
       headers: {'Content-Type': 'application/json'},
@@ -24,15 +36,15 @@ class ApiClient {
         logPrint: (o) => debugPrint(o.toString()),
       ),
     ]);
-
-  // Attach Bearer token to every request
+    
   Interceptor _authInterceptor() {
     return InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = await _storage.read(
           key: AppConstants.accessTokenKey,
         );
-        if (token != null) {
+              
+        if (token!.isNotEmpty) { 
           options.headers['Authorization'] = 'Bearer $token';
         }
         handler.next(options);

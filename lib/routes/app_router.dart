@@ -55,7 +55,7 @@ class AppRouter {
           StatefulShellBranch(routes: [
             GoRoute(
               path: AppConstants.routeStats,
-              builder: (context, state) => const StatScreen(), // Gọi màn hình Stat của bạn
+              builder: (context, state) => const StatScreen(), 
             ),
           ]),
           StatefulShellBranch(routes: [

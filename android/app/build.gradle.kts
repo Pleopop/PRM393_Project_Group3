@@ -42,3 +42,8 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // Thêm dòng này theo yêu cầu của Discord
+    implementation("androidx.browser:browser:1.8.0")
+}

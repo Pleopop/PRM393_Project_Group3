@@ -38,9 +38,16 @@ class LeaderboardRowItem extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: rankColor.withOpacity(0.15), // Nền mờ của rank
+              color: user.rank > 0 ? rankColor.withOpacity(0.15) : Colors.transparent, 
             ),
-            child: Text('${user.rank}', style: TextStyle(color: rankColor, fontWeight: FontWeight.bold, fontSize: 13)),
+            child: Text(
+              user.rank > 0 ? '${user.rank}' : '-', 
+              style: TextStyle(
+                color: user.rank > 0 ? rankColor : AppColors.mutedForeground.withOpacity(0.5), 
+                fontWeight: FontWeight.bold, 
+                fontSize: user.rank > 0 ? 13 : 18, 
+              )
+            ),
           ),
           const SizedBox(width: 12),
 
@@ -55,10 +62,19 @@ class LeaderboardRowItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: user.isMe ? p1.withOpacity(0.2) : Colors.white.withOpacity(0.05),
+                    // Hiển thị ảnh Discord nếu có URL
+                    image: (user.avatarUrl != null && user.avatarUrl!.isNotEmpty)
+                        ? DecorationImage(
+                            image: NetworkImage(user.avatarUrl!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
-                  child: Text(getInitials(user.name), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: user.isMe ? p1 : Colors.white70)),
+                  // Nếu KHÔNG có ảnh thì mới hiện chữ cái đầu
+                  child: (user.avatarUrl == null || user.avatarUrl!.isEmpty)
+                      ? Text(getInitials(user.name), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: user.isMe ? p1 : Colors.white70))
+                      : null,
                 ),
-                const SizedBox(width: 12),
                 
                 // Tên người dùng
                 Expanded(

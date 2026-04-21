@@ -26,7 +26,7 @@ class Top5Section extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Tiêu đề Top 5
+          //  Top 5
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -50,7 +50,7 @@ class Top5Section extends StatelessWidget {
           ),
           const Divider(color: AppColors.border, height: 24),
           
-          // Danh sách cuộn ngang
+          //Scroll horizontal list
           SizedBox(
             height: 110, 
             child: ListView.separated(

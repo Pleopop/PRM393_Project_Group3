@@ -1,30 +1,27 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/leaderboard_model.dart';
 import '../services/leaderboard_service.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-class LeaderboardProvider extends ChangeNotifier {
-  final LeaderboardService _service = LeaderboardService();
 
-  LeaderboardVM? data;
-  bool isLoading = false;
-  String? error;
+final leaderboardServiceProvider = Provider((ref) => LeaderboardService());
 
-  // Hàm gọi API và cập nhật UI
+final leaderboardProvider = StateNotifierProvider<LeaderboardNotifier, AsyncValue<LeaderboardVM>>((ref) {
+  return LeaderboardNotifier(ref.watch(leaderboardServiceProvider));
+});
+
+class LeaderboardNotifier extends StateNotifier<AsyncValue<LeaderboardVM>> {
+  final LeaderboardService _service;
+
+  LeaderboardNotifier(this._service) : super(const AsyncValue.loading()) {
+    loadData();
+  }
+
   Future<void> loadData() async {
-    isLoading = true;
-    error = null;
-    notifyListeners(); // Báo UI hiện icon loading
-
+    state = const AsyncValue.loading();
     try {
-      // data = await _service.fetchLeaderboardData();
-    } catch (e) {
-      error = e.toString();
-    } finally {
-      isLoading = false;
-      notifyListeners(); // Báo UI tắt loading, hiện data hoặc báo lỗi
+      final data = await _service.fetchLeaderboardData();
+      state = AsyncValue.data(data);
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
     }
   }
 }
-final leaderboardProvider = ChangeNotifierProvider<LeaderboardProvider>((ref) {
-  return LeaderboardProvider();
-});

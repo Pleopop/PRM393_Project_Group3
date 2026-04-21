@@ -38,9 +38,16 @@ class LeaderboardRowItem extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: rankColor.withOpacity(0.15), // Nền mờ của rank
+              color: user.rank > 0 ? rankColor.withOpacity(0.15) : Colors.transparent, 
             ),
-            child: Text('${user.rank}', style: TextStyle(color: rankColor, fontWeight: FontWeight.bold, fontSize: 13)),
+            child: Text(
+              user.rank > 0 ? '${user.rank}' : '-', 
+              style: TextStyle(
+                color: user.rank > 0 ? rankColor : AppColors.mutedForeground.withOpacity(0.5), 
+                fontWeight: FontWeight.bold, 
+                fontSize: user.rank > 0 ? 13 : 18, 
+              )
+            ),
           ),
           const SizedBox(width: 12),
 

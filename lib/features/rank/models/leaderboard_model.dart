@@ -15,12 +15,18 @@ class LeaderboardMember {
 
   factory LeaderboardMember.fromJson(Map<String, dynamic> json) {
     int seconds = json['totalSeconds'] ?? 0;
+    double hours = seconds / 3600.0;
     
+   
+    int parsedRank = json['rank'] ?? 0;
+    if (hours <= 0) {
+      parsedRank = 0; 
+    }
     return LeaderboardMember(
       id: json['userId']?.toString() ?? '',
       name: json['username'] ?? 'Unknown',
-      hours: seconds / 3600.0,
-      rank: json['rank'] ?? 0,
+      hours: hours,
+      rank: parsedRank, 
       changeRank: json['changeRank'] ?? 0,
       trend: (json['changeRank'] ?? 0) >= 0 ? 'up' : 'down',
       isMe: false, 

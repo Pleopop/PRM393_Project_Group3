@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/login_form.dart';
+import '../widgets/discord_login_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -9,24 +9,34 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 48),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // App logo / title
+                const Icon(
+                  Icons.school_rounded,
+                  size: 80,
+                  color: Color(0xFF5865F2),
+                ),
+                const SizedBox(height: 24),
                 Text(
-                  'Welcome back 👋',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  'Study Bot',
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Sign in to continue',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
+                  'Đăng nhập bằng tài khoản Discord của bạn\ntrong server để tiếp tục.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
-                const SizedBox(height: 40),
-                const LoginForm(),
+                const SizedBox(height: 48),
+                const DiscordLoginButton(),
               ],
             ),
           ),

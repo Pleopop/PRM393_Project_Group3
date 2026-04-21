@@ -1,49 +1,34 @@
+import 'dart:convert';
+
 class UserModel {
-  final String id;
-  final String email;
-  final String? name;
-  final String? avatarUrl;
-  final String? role;
+  final String token;
+  final String username;
+  final String? avatar;
 
-  const UserModel({
-    required this.id,
-    required this.email,
-    this.name,
-    this.avatarUrl,
-    this.role,
-  });
+  const UserModel({required this.token, required this.username, this.avatar});
 
+  /// Backend returns: { token, username, avatar }
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as String,
-      email: json['email'] as String,
-      name: json['name'] as String?,
-      avatarUrl: json['avatar_url'] as String?,
-      role: json['role'] as String?,
+      token: json['token'] as String,
+      username: json['username'] as String,
+      avatar: json['avatar'] as String?,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'email': email,
-        'name': name,
-        'avatar_url': avatarUrl,
-        'role': role,
-      };
+    'token': token,
+    'username': username,
+    'avatar': avatar,
+  };
 
-  UserModel copyWith({
-    String? id,
-    String? email,
-    String? name,
-    String? avatarUrl,
-    String? role,
-  }) {
+  String toJsonString() => jsonEncode(toJson());
+
+  UserModel copyWith({String? token, String? username, String? avatar}) {
     return UserModel(
-      id: id ?? this.id,
-      email: email ?? this.email,
-      name: name ?? this.name,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      role: role ?? this.role,
+      token: token ?? this.token,
+      username: username ?? this.username,
+      avatar: avatar ?? this.avatar,
     );
   }
 }

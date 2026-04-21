@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/constants/app_constants.dart';
+import '../features/auth/screens/callback_screen.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/services/auth_service.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
@@ -18,11 +19,18 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: AppConstants.routeLogin,
     redirect: (context, state) async {
-      // final isLoggedIn = await _authService.isLoggedIn();
-      // final isLoginPage = state.matchedLocation == AppConstants.routeLogin;
+      final isLoggedIn = await _authService.isLoggedIn();
+      final location = state.matchedLocation;
 
-      // if (!isLoggedIn && !isLoginPage) return AppConstants.routeLogin;
-      // if (isLoggedIn && isLoginPage) return AppConstants.routeDashboard;
+      // Let the callback route through unconditionally
+      if (location == AppConstants.routeCallback) return null;
+
+      if (!isLoggedIn && location != AppConstants.routeLogin) {
+        return AppConstants.routeLogin;
+      }
+      if (isLoggedIn && location == AppConstants.routeLogin) {
+        return AppConstants.routeDashboard;
+      }
       return null;
     },
     routes: [
@@ -30,47 +38,64 @@ class AppRouter {
         path: AppConstants.routeLogin,
         builder: (context, state) => const LoginScreen(),
       ),
+
+      // OAuth2 callback — Discord redirects here with ?code=...
+      GoRoute(
+        path: AppConstants.routeCallback,
+        builder: (context, state) {
+          final code = state.uri.queryParameters['code'] ?? '';
+          return CallbackScreen(code: code);
+        },
+      ),
+
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             MainShell(navigationShell: navigationShell),
         branches: [
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: AppConstants.routeDashboard,
-              builder: (context, state) => const DashboardScreen(),
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: AppConstants.routeRank,
-              builder: (context, state) => const LeaderboardScreen(),
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: AppConstants.routePolicies,
-              builder: (context, state) => const PoliciesScreen(),
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: AppConstants.routeStats,
-              builder: (context, state) => const StatScreen(), // Gọi màn hình Stat của bạn
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: AppConstants.routeProfile,
-              builder: (context, state) => const ProfileScreen(),
-            ),
-          ]),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppConstants.routeDashboard,
+                builder: (context, state) => const DashboardScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppConstants.routeRank,
+                builder: (context, state) => const LeaderboardScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppConstants.routePolicies,
+                builder: (context, state) => const PoliciesScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppConstants.routeStats,
+                builder: (context, state) => const StatScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppConstants.routeProfile,
+                builder: (context, state) => const ProfileScreen(),
+              ),
+            ],
+          ),
         ],
       ),
     ],
-    errorBuilder: (context, state) => Scaffold(
-      body: Center(
-        child: Text('Page not found: ${state.error}'),
-      ),
-    ),
+    errorBuilder: (context, state) =>
+        Scaffold(body: Center(child: Text('Page not found: ${state.error}'))),
   );
 }

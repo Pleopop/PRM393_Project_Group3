@@ -94,7 +94,7 @@ class _StatCardState extends State<StatCard>
                           : '–',
                       style: TextStyle(
                         fontSize: 9, fontWeight: FontWeight.w700,
-                        color: trendColor,
+                        color: DashboardColors.primary,
                       ),
                     ),
                   ],
@@ -142,7 +142,7 @@ class _StatCardState extends State<StatCard>
           ),
           const SizedBox(height: 2),
           Text(st.labelVi,
-            style: const TextStyle(fontSize: 10, color: DashboardColors.textSub),
+            style: const TextStyle(fontSize: 12, color: DashboardColors.textSub),
             overflow: TextOverflow.ellipsis,
           ),
         ],

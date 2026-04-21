@@ -5,9 +5,13 @@ class _HeroHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF8B7FD4), Color(0xFFB57BDD), Color(0xFFD48BBB)],
+          colors: [
+            _p1,
+            _p2,
+            _accent,
+          ], // dùng _p1, _p2 như _RuleCard/_IntroParagraph
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
@@ -65,8 +69,10 @@ class _HeroHeader extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.18),
                     borderRadius: BorderRadius.circular(20),
@@ -113,7 +119,11 @@ class _DiagonalPainter extends CustomPainter {
 
     const step = 18.0;
     for (double x = -size.height; x < size.width + size.height; x += step) {
-      canvas.drawLine(Offset(x, 0), Offset(x + size.height, size.height), paint);
+      canvas.drawLine(
+        Offset(x, 0),
+        Offset(x + size.height, size.height),
+        paint,
+      );
     }
   }
 

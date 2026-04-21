@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class DashboardColors {
-  static const primary = Color(0xFF7C6FCD); // purple
-  static const secondary = Color(0xFFE9A0BE); // pink
-  static const bg = Color(0xFFF5F3FF);
-  static const surface = Color(0xFFFFFFFF);
-  static const textMain = Color(0xFF1E1B4B);
-  static const textSub = Color(0xFF94A3B8);
+  static const primary = Color(0xFF7C3AED);   // purple
+  static const secondary = Color(0xFF6366F1); // indigo
+  static const bg = Color(0xFF17171C);
+  static const surface = Color(0xFF25252B);
+  static const textMain = Color(0xFFF9F9FB);
+  static const textSub = Color(0xFFABACB5);
   static const gain = Color(0xFF7C6FCD);
   static const loss = Color(0xFFE9A0BE);
-  static const ma = Color(0xFF7C6FCD);
-  static const border = Color(0xFFEDE9FE);
+  static const ma = Color(0xFF7C3AED);
+  static const border = Color(0xFF3A3A42);
 }

@@ -19,7 +19,6 @@ class StudyBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Subsample labels: only show label every N bars
     final n = pts.length;
 
     return BarChart(
@@ -35,20 +34,24 @@ class StudyBarChart extends StatelessWidget {
               final p = pts[groupIndex];
               return BarTooltipItem(
                 '${p.label}\n',
-                const TextStyle(
-                  color: Colors.white60, fontSize: 10,
-                ),
+                const TextStyle(color: Colors.white60, fontSize: 10),
                 children: [
                   TextSpan(
                     text: '${p.hours.toStringAsFixed(1)}h',
                     style: TextStyle(
-                      color: p.isGain ? DashboardColors.gain : DashboardColors.loss,
-                      fontSize: 13, fontWeight: FontWeight.w700,
+                      color: p.isGain
+                          ? DashboardColors.gain
+                          : DashboardColors.loss,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   TextSpan(
                     text: '\nMA7 · ${p.ma7.toStringAsFixed(1)}h',
-                    style: const TextStyle(color: Color(0xFF4ECDB7), fontSize: 10),
+                    style: const TextStyle(
+                      color: Color(0xFF4ECDB7),
+                      fontSize: 10,
+                    ),
                   ),
                 ],
               );
@@ -62,8 +65,12 @@ class StudyBarChart extends StatelessWidget {
           },
         ),
         titlesData: FlTitlesData(
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -73,7 +80,10 @@ class StudyBarChart extends StatelessWidget {
                 if (v % 2 != 0) return const SizedBox.shrink();
                 return Text(
                   v == 0 ? '0' : '${v.toInt()}h',
-                  style: const TextStyle(fontSize: 9, color: DashboardColors.textSub),
+                  style: const TextStyle(
+                    fontSize: 9,
+                    color: DashboardColors.textSub,
+                  ),
                 );
               },
             ),
@@ -89,7 +99,10 @@ class StudyBarChart extends StatelessWidget {
                 if (label.isEmpty) return const SizedBox.shrink();
                 return Text(
                   label,
-                  style: const TextStyle(fontSize: 9, color: DashboardColors.textSub),
+                  style: const TextStyle(
+                    fontSize: 9,
+                    color: DashboardColors.textSub,
+                  ),
                 );
               },
             ),
@@ -120,17 +133,24 @@ class StudyBarChart extends StatelessWidget {
                 width: n > 30 ? 4 : 7,
                 borderRadius: BorderRadius.circular(n > 30 ? 2 : 3),
                 color: p.isGain
-                    ? DashboardColors.gain.withOpacity(isTouched ? 1.0 : 0.55)
-                    : DashboardColors.loss.withOpacity(isTouched ? 1.0 : 0.55),
+                    ? DashboardColors.gain.withOpacity(isTouched ? 1.0 : 0.75)
+                    : DashboardColors.loss.withOpacity(isTouched ? 1.0 : 0.75),
               ),
             ],
             showingTooltipIndicators: isTouched ? [0] : [],
           );
         }).toList(),
-        // ── MA7 line overlay via extraLinesData ──
+
         extraLinesData: ExtraLinesData(
           extraLinesOnTop: true,
-          horizontalLines: [],
+          horizontalLines: [
+            HorizontalLine(
+              y: 0,
+              color: DashboardColors.primary,
+              strokeWidth: 0.5,
+              dashArray: [4, 6],
+            ),
+          ],
         ),
       ),
     );

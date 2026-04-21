@@ -65,7 +65,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 16),
 
             // ── Chart card ──
-            ChartCard(
+          ChartCard(
               chart: chart,
               timeframe: _timeframe,
               onToggle: (tf) => setState(() => _timeframe = tf),
@@ -82,7 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildInsightsSection() {
     return SizedBox(
-      height: 520,
+      height: 650,
       child: SidebarInsights(
         timeOfDayHours: _vm!.timeOfDayHours,
         streakCalendar: _vm!.streakCalendar,
@@ -112,7 +112,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'StudyBloom',
+              'Study Bot',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -127,12 +127,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ],
-        ),
-        const Spacer(),
-        IconButton(
-          icon: const Icon(Icons.notifications_none_rounded,
-              color: DashboardColors.textSub),
-          onPressed: () {},
         ),
       ],
     );

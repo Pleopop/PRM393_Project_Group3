@@ -2,9 +2,9 @@ part of '../right_col.dart';
 
 const _segmentNames = ['Sáng', 'Chiều', 'Tối', 'Đêm'];
 const _segmentColors = [
+  Colors.orange,
   DashboardColors.loss,
   DashboardColors.secondary,
-  DashboardColors.primary,
   DashboardColors.ma,
 ];
 

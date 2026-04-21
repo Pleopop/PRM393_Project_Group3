@@ -12,7 +12,8 @@ class TimeframeToggle extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: const Color(0xFFF0EEFF),
+        color: DashboardColors.surface,
+        border: Border.all(color: DashboardColors.border),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

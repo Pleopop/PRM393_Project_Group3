@@ -120,8 +120,7 @@ class _ChartCardState extends State<ChartCard> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 3.2,
+                childAspectRatio: 2,
               ),
               itemCount: _footerStats.length,
               itemBuilder: (_, i) {
@@ -131,13 +130,13 @@ class _ChartCardState extends State<ChartCard> {
                   children: [
                     Text(f['value']!,
                       style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w700,
+                        fontSize: 16, fontWeight: FontWeight.w700,
                         color: DashboardColors.textMain,
                       ),
                     ),
                     Text(f['label']!,
                       style: const TextStyle(
-                        fontSize: 9, color: DashboardColors.textSub,
+                        fontSize: 12, color: DashboardColors.textSub,
                       ),
                       textAlign: TextAlign.center,
                     ),

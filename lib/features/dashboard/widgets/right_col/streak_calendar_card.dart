@@ -15,59 +15,75 @@ class _StreakCalendarCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ── Header tháng ──
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.chevron_left_rounded, size: 16, color: _textSub),
+              icon: const Icon(
+                Icons.chevron_left_rounded,
+                size: 20,
+                color: _textSub,
+              ),
               onPressed: () {},
               padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             ),
             Text(
               monthTitle,
               style: const TextStyle(
-                fontSize: 10,
+                fontSize: 13,
                 fontWeight: FontWeight.w900,
                 color: _textMain,
                 letterSpacing: 1.0,
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.chevron_right_rounded, size: 16, color: _textSub),
+              icon: const Icon(
+                Icons.chevron_right_rounded,
+                size: 20,
+                color: _textSub,
+              ),
               onPressed: () {},
               padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             ),
           ],
         ),
-        const SizedBox(height: 4),
+
+        // ── DOW header ──
         Row(
           children: _dow
               .map(
                 (d) => Expanded(
-                  child: Text(
-                    d,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 9,
-                      fontWeight: FontWeight.w600,
-                      color: _textSub,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Text(
+                      d,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: _textSub,
+                      ),
                     ),
                   ),
                 ),
               )
               .toList(),
         ),
-        const SizedBox(height: 4),
+
+        // ── Grid tuần – Expanded để fill hết chiều cao còn lại ──
         Expanded(
           child: Column(
-            children: weekRows
-                .map((week) => Expanded(child: _WeekRow(week: week)))
-                .toList(),
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // phân bổ đều
+            children: weekRows.map((week) => _WeekRow(week: week)).toList(),
           ),
         ),
+
         const Divider(color: _border, height: 16, thickness: 1),
+
+        // ── Stat chips ──
         Row(
           children: [
             _StatChip(value: '${calendar.currentStreak}', label: 'Streak'),
@@ -86,37 +102,42 @@ class _WeekRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: week.asMap().entries.map((entry) {
-        final di = entry.key;
-        final day = entry.value;
-        if (day == null) {
-          return const Expanded(child: SizedBox.shrink());
-        }
+    return SizedBox(
+      height: 36, // chiều cao cố định mỗi row — đủ cho circle 30 + dot
+      child: Row(
+        children: week.asMap().entries.map((entry) {
+          final di = entry.key;
+          final day = entry.value;
 
-        final prevStreak = di > 0 && (week[di - 1]?.hasStudy ?? false);
-        final nextStreak = di < 6 && (week[di + 1]?.hasStudy ?? false);
+          if (day == null) return const Expanded(child: SizedBox.shrink());
 
-        BorderRadius? pillRadius;
-        Color? pillColor;
-        if (day.hasStudy) {
-          pillColor = _p1.withOpacity(0.10);
-          pillRadius = BorderRadius.horizontal(
-            left: Radius.circular(prevStreak ? 0 : 999),
-            right: Radius.circular(nextStreak ? 0 : 999),
+          final prevStreak = di > 0 && (week[di - 1]?.hasStudy ?? false);
+          final nextStreak = di < 6 && (week[di + 1]?.hasStudy ?? false);
+
+          BorderRadius? pillRadius;
+          Color? pillColor;
+          if (day.hasStudy) {
+            pillColor = _p1.withOpacity(0.08);
+            pillRadius = BorderRadius.horizontal(
+              left: Radius.circular(prevStreak ? 0 : 999),
+              right: Radius.circular(nextStreak ? 0 : 999),
+            );
+          }
+
+          return Expanded(
+            child: ClipRect(
+              // ← ngăn mọi overflow tràn ra ngoài cell
+              child: Container(
+                decoration: pillColor != null
+                    ? BoxDecoration(color: pillColor, borderRadius: pillRadius)
+                    : null,
+                alignment: Alignment.center,
+                child: _DayCell(day: day),
+              ),
+            ),
           );
-        }
-
-        return Expanded(
-          child: Container(
-            decoration: pillColor != null
-                ? BoxDecoration(color: pillColor, borderRadius: pillRadius)
-                : null,
-            alignment: Alignment.center,
-            child: _DayCell(day: day),
-          ),
-        );
-      }).toList(),
+        }).toList(),
+      ),
     );
   }
 }
@@ -131,12 +152,12 @@ class _DayCell extends StatelessWidget {
 
     if (day.isToday) {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 24,
-            height: 24,
+            width: 30,
+            height: 30,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: const LinearGradient(
@@ -144,22 +165,27 @@ class _DayCell extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              boxShadow: [BoxShadow(color: _p1.withOpacity(0.4), blurRadius: 8)],
+              boxShadow: [
+                BoxShadow(color: _p1.withOpacity(0.4), blurRadius: 8),
+              ],
             ),
             child: Center(
               child: Text(
                 '$num',
                 style: const TextStyle(
-                  fontSize: 10,
+                  fontSize: 13,
                   fontWeight: FontWeight.w900,
                   color: Colors.white,
                 ),
               ),
             ),
           ),
-          CustomPaint(
-            size: const Size(8, 5),
-            painter: _TrianglePainter(color: _p1),
+          // Dot thay cho triangle — không bao giờ overflow
+          const SizedBox(height: 2),
+          Container(
+            width: 4,
+            height: 4,
+            decoration: BoxDecoration(color: _p1, shape: BoxShape.circle),
           ),
         ],
       );
@@ -168,18 +194,20 @@ class _DayCell extends StatelessWidget {
     if (day.hasStudy) {
       return Text(
         '$num',
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 10,
+          fontSize: 13,
           fontWeight: FontWeight.w600,
-          color: _p1,
+          color: DashboardColors.primary,
         ),
       );
     }
 
     return Text(
       '$num',
+      textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize: 10,
+        fontSize: 13,
         fontWeight: FontWeight.w400,
         color: _textSub.withOpacity(0.55),
       ),
@@ -243,15 +271,12 @@ class _StatChip extends StatelessWidget {
           Text(
             value,
             style: const TextStyle(
-              fontSize: 13,
+              fontSize: 15,
               fontWeight: FontWeight.w700,
               color: _p1,
             ),
           ),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 9, color: _textSub),
-          ),
+          Text(label, style: const TextStyle(fontSize: 12, color: _textSub)),
         ],
       ),
     );

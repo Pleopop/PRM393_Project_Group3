@@ -1,6 +1,7 @@
 library policies_screen;
 
 import 'package:flutter/material.dart';
+import 'package:project_group3/features/dashboard/widgets/dashboard_colors.dart';
 
 part 'policies_screen/data.dart';
 part 'policies_screen/theme.dart';

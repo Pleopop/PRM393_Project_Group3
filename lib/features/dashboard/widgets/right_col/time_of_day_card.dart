@@ -58,14 +58,14 @@ class _TimeOfDayCardState extends State<_TimeOfDayCard>
         const Text(
           'Phân bổ theo Buổi',
           style: TextStyle(
-            fontSize: 13,
+            fontSize: 15,
             fontWeight: FontWeight.w700,
             color: _textMain,
           ),
         ),
         Text(
-          '4 tuần gần nhất · ${total}h',
-          style: const TextStyle(fontSize: 10, color: _textSub),
+          '4 tuần gần nhất · ${total.toStringAsFixed(1)}h',
+          style: const TextStyle(fontSize: 12, color: _textSub),
         ),
         const SizedBox(height: 8),
         AnimatedBuilder(
@@ -219,11 +219,11 @@ class _DonutPainter extends CustomPainter {
         final nameTp = TextPainter(
           text: TextSpan(
             text: names[i],
-            style: TextStyle(
-              color: _p1.withOpacity(anim),
-              fontSize: 9,
-              fontWeight: FontWeight.w600,
-            ),
+        style: TextStyle(
+  color: colors[i].withOpacity(anim),
+  fontSize: 12,
+  fontWeight: FontWeight.w600,
+),
           ),
           textDirection: TextDirection.ltr,
           textAlign: isRight ? TextAlign.left : TextAlign.right,

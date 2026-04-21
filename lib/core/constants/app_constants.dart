@@ -2,7 +2,7 @@ class AppConstants {
   AppConstants._();
 
   // API
-  static const String baseUrl = 'http://localhost:3000';
+  static const String baseUrl = 'https://65e9-42-112-141-205.ngrok-free.app';
   static const Duration connectTimeout = Duration(seconds: 10);
   static const Duration receiveTimeout = Duration(seconds: 15);
 
@@ -13,7 +13,10 @@ class AppConstants {
 
   // Discord OAuth2
   static const String discordClientId = '1471451791865417893';
-  static const String discordRedirectUri = 'com.studybot.discord://callback';
+
+  // static const String discordRedirectUri = 'com.studybot.discord://callback';
+  static const String discordRedirectUri =
+      'http://52.65.122.242:8888/mobile-callback';
   static const String discordScopes = 'identify';
 
   // Routes

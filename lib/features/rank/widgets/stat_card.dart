@@ -7,7 +7,7 @@ class StatCard extends StatelessWidget {
   final String suffix;
   final IconData icon;
   final List<Color> gradientColors;
-  final double trendValue; // Thêm % biến động
+  final double trendValue; 
 
   const StatCard({
     Key? key, required this.label, required this.rawValue, 
@@ -18,23 +18,21 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isPositive = trendValue >= 0;
-    // Lấy màu trend từ custom theme (hoặc dùng mặc định nếu chưa có)
     final customTheme = Theme.of(context).extension<CustomAppTheme>();
-    final p1 = customTheme?.chart1 ?? const Color(0xFF7C3AED); // Màu tăng
-    final p2 = customTheme?.chart5 ?? const Color(0xFFF472B6); // Màu giảm
+    final p1 = customTheme?.chart1 ?? const Color(0xFF7C3AED); 
+    final p2 = customTheme?.chart5 ?? const Color(0xFFF472B6); 
 
     return Container(
-      padding: const EdgeInsets.all(12), // Giảm padding một chút cho màn hình mobile
+      padding: const EdgeInsets.all(12), 
       decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius: BorderRadius.circular(AppColors.radius),
-        border: Border.all(color: Colors.white.withOpacity(0.03)), // Viền sáng rất mờ giống Figma
+        border: Border.all(color: Colors.white.withOpacity(0.03)), 
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Tự động dãn đều trên/dưới
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, 
         children: [
-          // Row 1: Label & Icon
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -42,7 +40,7 @@ class StatCard extends StatelessWidget {
               Container(
                 width: 28, height: 28,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle, // Trong Figma icon nằm trong hình tròn
+                  shape: BoxShape.circle, 
                   gradient: LinearGradient(colors: gradientColors),
                 ),
                 child: Icon(icon, size: 14, color: Colors.white),
@@ -50,7 +48,6 @@ class StatCard extends StatelessWidget {
             ],
           ),
           
-          // Row 2: Large Number
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
@@ -64,7 +61,6 @@ class StatCard extends StatelessWidget {
             ],
           ),
 
-          // Row 3: Trend (Mũi tên + % phần trăm)
           Row(
             children: [
               Icon(isPositive ? Icons.trending_up : Icons.trending_down, size: 14, color: isPositive ? p1 : p2),

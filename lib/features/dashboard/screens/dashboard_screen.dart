@@ -17,7 +17,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   OverviewModel? _vm;
   bool _loading = true;
-  String _timeframe = 'month'; // 'month' | 'year'
+  String _timeframe = 'week'; // 'week' | 'month'
 
   @override
   void initState() {
@@ -48,7 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildBody() {
     final vm = _vm!;
-    final chart = _timeframe == 'month' ? vm.monthlyChart : vm.yearlyChart;
+    final chart = _timeframe == 'week' ? vm.weeklyChart : vm.monthlyChart;
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -83,7 +83,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildInsightsSection() {
     return SizedBox(
       height: 520,
-      child: const SidebarInsights(),
+      child: SidebarInsights(
+        timeOfDayHours: _vm!.timeOfDayHours,
+        streakCalendar: _vm!.streakCalendar,
+      ),
     );
   }
 

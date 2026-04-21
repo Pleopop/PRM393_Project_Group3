@@ -106,13 +106,16 @@ class _StatCardState extends State<StatCard>
           AnimatedBuilder(
             animation: _anim,
             builder: (_, __) {
-              final val = st.suffix.isEmpty
-                  ? _anim.value.round().toString()
-                  : _anim.value.toStringAsFixed(
-                      st.rawValue.toString().contains('.') &&
-                      st.rawValue.toString().split('.')[1].isNotEmpty
-                          ? 1
-                          : 0);
+              final usesServerValue = !_isNumeric(st.value);
+              final val = usesServerValue
+                  ? st.value
+                  : st.suffix.isEmpty
+                      ? _anim.value.round().toString()
+                      : _anim.value.toStringAsFixed(
+                          st.rawValue.toString().contains('.') &&
+                                  st.rawValue.toString().split('.')[1].isNotEmpty
+                              ? 1
+                              : 0);
               return RichText(
                 text: TextSpan(
                   children: [
@@ -146,4 +149,6 @@ class _StatCardState extends State<StatCard>
       ),
     );
   }
+
+  bool _isNumeric(String value) => double.tryParse(value) != null;
 }

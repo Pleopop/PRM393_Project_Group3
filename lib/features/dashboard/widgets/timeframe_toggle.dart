@@ -17,11 +17,11 @@ class TimeframeToggle extends StatelessWidget {
       ),
       child: Row(
         children: [
+          _Tab(label: 'Tuần', selected: value == 'week',
+               onTap: () => onChanged('week')),
+          const SizedBox(width: 4),
           _Tab(label: 'Tháng', selected: value == 'month',
                onTap: () => onChanged('month')),
-          const SizedBox(width: 4),
-          _Tab(label: 'Năm', selected: value == 'year',
-               onTap: () => onChanged('year')),
         ],
       ),
     );

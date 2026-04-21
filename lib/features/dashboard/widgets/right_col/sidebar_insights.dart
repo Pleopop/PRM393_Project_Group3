@@ -1,15 +1,24 @@
 part of '../right_col.dart';
 
 class SidebarInsights extends StatelessWidget {
-  const SidebarInsights({super.key});
+  final List<double> timeOfDayHours;
+  final StreakCalendarModel streakCalendar;
+
+  const SidebarInsights({
+    super.key,
+    required this.timeOfDayHours,
+    required this.streakCalendar,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _SurfaceCard(child: const _TimeOfDayCard()),
+        _SurfaceCard(child: _TimeOfDayCard(hours: timeOfDayHours)),
         const SizedBox(height: 12),
-        Expanded(child: _SurfaceCard(child: const _StreakCalendarCard())),
+        Expanded(
+          child: _SurfaceCard(child: _StreakCalendarCard(calendar: streakCalendar)),
+        ),
       ],
     );
   }

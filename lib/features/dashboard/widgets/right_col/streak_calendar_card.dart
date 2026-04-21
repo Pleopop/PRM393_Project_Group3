@@ -1,13 +1,16 @@
 part of '../right_col.dart';
 
 class _StreakCalendarCard extends StatelessWidget {
-  const _StreakCalendarCard();
+  final StreakCalendarModel calendar;
+  const _StreakCalendarCard({required this.calendar});
 
   static const _dow = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
 
   @override
   Widget build(BuildContext context) {
-    final weeks = List.generate(5, (w) => _calDays.sublist(w * 7, w * 7 + 7));
+    final days = calendar.days;
+    final weekRows = _chunkWeeks(days);
+    final monthTitle = _monthRangeLabel(days);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,9 +24,9 @@ class _StreakCalendarCard extends StatelessWidget {
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
             ),
-            const Text(
-              'THG 3 – 4 / 2026',
-              style: TextStyle(
+            Text(
+              monthTitle,
+              style: const TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w900,
                 color: _textMain,
@@ -59,7 +62,7 @@ class _StreakCalendarCard extends StatelessWidget {
         const SizedBox(height: 4),
         Expanded(
           child: Column(
-            children: weeks
+            children: weekRows
                 .map((week) => Expanded(child: _WeekRow(week: week)))
                 .toList(),
           ),
@@ -67,9 +70,9 @@ class _StreakCalendarCard extends StatelessWidget {
         const Divider(color: _border, height: 16, thickness: 1),
         Row(
           children: [
-            _StatChip(value: '${_StreakRaw.current}', label: 'Streak'),
-            _StatChip(value: '${_StreakRaw.best}', label: 'Kỷ lục'),
-            _StatChip(value: '$_studyDays', label: 'Ngày học'),
+            _StatChip(value: '${calendar.currentStreak}', label: 'Streak'),
+            _StatChip(value: '${calendar.longestStreak}', label: 'Kỷ lục'),
+            _StatChip(value: '${calendar.studyDays}', label: 'Ngày học'),
           ],
         ),
       ],
@@ -78,7 +81,7 @@ class _StreakCalendarCard extends StatelessWidget {
 }
 
 class _WeekRow extends StatelessWidget {
-  final List<_CalDay> week;
+  final List<StreakDayModel?> week;
   const _WeekRow({required this.week});
 
   @override
@@ -87,13 +90,16 @@ class _WeekRow extends StatelessWidget {
       children: week.asMap().entries.map((entry) {
         final di = entry.key;
         final day = entry.value;
+        if (day == null) {
+          return const Expanded(child: SizedBox.shrink());
+        }
 
-        final prevStreak = di > 0 && week[di - 1].isStreakDay;
-        final nextStreak = di < 6 && week[di + 1].isStreakDay;
+        final prevStreak = di > 0 && (week[di - 1]?.hasStudy ?? false);
+        final nextStreak = di < 6 && (week[di + 1]?.hasStudy ?? false);
 
         BorderRadius? pillRadius;
         Color? pillColor;
-        if (day.isStreakDay) {
+        if (day.hasStudy) {
           pillColor = _p1.withOpacity(0.10);
           pillRadius = BorderRadius.horizontal(
             left: Radius.circular(prevStreak ? 0 : 999),
@@ -116,7 +122,7 @@ class _WeekRow extends StatelessWidget {
 }
 
 class _DayCell extends StatelessWidget {
-  final _CalDay day;
+  final StreakDayModel day;
   const _DayCell({required this.day});
 
   @override
@@ -159,46 +165,13 @@ class _DayCell extends StatelessWidget {
       );
     }
 
-    if (day.isStreakStart) {
-      return Container(
-        width: 24,
-        height: 24,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _p1,
-          boxShadow: [BoxShadow(color: _p1.withOpacity(0.35), blurRadius: 6)],
-        ),
-        child: Center(
-          child: Text(
-            '$num',
-            style: const TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w800,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      );
-    }
-
-    if (day.isStreakDay) {
+    if (day.hasStudy) {
       return Text(
         '$num',
         style: const TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.w600,
           color: _p1,
-        ),
-      );
-    }
-
-    if (day.intensity > 0) {
-      return Text(
-        '$num',
-        style: const TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.w500,
-          color: _p2,
         ),
       );
     }
@@ -212,6 +185,31 @@ class _DayCell extends StatelessWidget {
       ),
     );
   }
+}
+
+List<List<StreakDayModel?>> _chunkWeeks(List<StreakDayModel> days) {
+  final rows = <List<StreakDayModel?>>[];
+  for (var i = 0; i < days.length; i += 7) {
+    final week = days.skip(i).take(7).cast<StreakDayModel?>().toList();
+    while (week.length < 7) {
+      week.add(null);
+    }
+    rows.add(week);
+  }
+  if (rows.isEmpty) {
+    rows.add(List<StreakDayModel?>.filled(7, null));
+  }
+  return rows;
+}
+
+String _monthRangeLabel(List<StreakDayModel> days) {
+  if (days.isEmpty) return 'THÁNG';
+  final first = days.first.date;
+  final last = days.last.date;
+  if (first.month == last.month) {
+    return 'THG ${first.month} / ${first.year}';
+  }
+  return 'THG ${first.month} - ${last.month} / ${last.year}';
 }
 
 class _TrianglePainter extends CustomPainter {

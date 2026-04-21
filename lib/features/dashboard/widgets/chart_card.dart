@@ -80,9 +80,9 @@ class _ChartCardState extends State<ChartCard> {
                     ),
                   ),
                   Text(
-                    widget.timeframe == 'month'
-                        ? '30 ngày gần nhất'
-                        : '52 tuần gần nhất',
+                    widget.timeframe == 'week'
+                        ? 'Dữ liệu theo tuần'
+                        : 'Dữ liệu theo tháng',
                     style: const TextStyle(fontSize: 11, color: DashboardColors.textSub),
                   ),
                 ],

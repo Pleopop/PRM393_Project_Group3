@@ -1,7 +1,8 @@
 part of '../right_col.dart';
 
 class _TimeOfDayCard extends StatefulWidget {
-  const _TimeOfDayCard();
+  final List<double> hours;
+  const _TimeOfDayCard({required this.hours});
 
   @override
   State<_TimeOfDayCard> createState() => _TimeOfDayCardState();
@@ -45,7 +46,11 @@ class _TimeOfDayCardState extends State<_TimeOfDayCard>
 
   @override
   Widget build(BuildContext context) {
-    final total = _segmentHours.fold(0, (a, b) => a + b);
+    final segmentHours = List<double>.generate(
+      _segmentColors.length,
+      (i) => i < widget.hours.length ? widget.hours[i] : 0,
+    );
+    final total = segmentHours.fold<double>(0, (a, b) => a + b);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +73,7 @@ class _TimeOfDayCardState extends State<_TimeOfDayCard>
           builder: (_, __) => CustomPaint(
             size: const Size(double.infinity, 160),
             painter: _DonutPainter(
-              hours: _segmentHours,
+              hours: segmentHours,
               colors: _segmentColors,
               names: _segmentNames,
               sectorAnims: _sectorAnims.map((a) => a.value).toList(),
@@ -83,7 +88,7 @@ class _TimeOfDayCardState extends State<_TimeOfDayCard>
 }
 
 class _DonutPainter extends CustomPainter {
-  final List<int> hours;
+  final List<double> hours;
   final List<Color> colors;
   final List<String> names;
   final List<double> sectorAnims;
@@ -106,7 +111,23 @@ class _DonutPainter extends CustomPainter {
     final R = math.min(cx, cy) * 0.72;
     final r = R * 0.48;
 
-    final total = hours.fold(0, (a, b) => a + b);
+    final total = hours.fold<double>(0, (a, b) => a + b);
+    if (total <= 0) {
+      canvas.drawCircle(
+        Offset(cx, cy),
+        R,
+        Paint()
+          ..color = _border
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = R - r,
+      );
+      canvas.drawCircle(
+        Offset(cx, cy),
+        r,
+        Paint()..color = _surface,
+      );
+      return;
+    }
     double startAngle = -math.pi / 2;
     final gapRad = gap * math.pi / 180;
 

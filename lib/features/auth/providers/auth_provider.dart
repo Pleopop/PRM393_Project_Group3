@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/constants/app_constants.dart';
+import '../../../routes/app_router.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
 
@@ -41,9 +43,10 @@ class AuthNotifier extends StateNotifier<AsyncValue<UserModel?>> {
     state = await AsyncValue.guard(() => _authService.exchangeCode(code));
   }
 
-  /// Logs out: calls the backend, then clears local state.
+  /// Logs out: calls the backend, clears local state, then redirects to login.
   Future<void> logout() async {
     await _authService.logout();
     state = const AsyncValue.data(null);
+    AppRouter.router.go(AppConstants.routeLogin);
   }
 }

@@ -71,8 +71,8 @@ class AuthService {
   Future<UserModel> exchangeCode(String code) async {
     final deviceId = await getDeviceId();
     final response = await _api.post(
-      '/auth/discord/callback',
-      data: {'code': code, 'deviceId': deviceId},
+      '/api/auth/discord/callback',
+      data: {'Code': code, 'DeviceId': deviceId, 'IsMobile': true},
     );
     final user = UserModel.fromJson(response.data as Map<String, dynamic>);
     await _saveUser(user);
@@ -102,6 +102,7 @@ class AuthService {
       key: AppConstants.authUserKey,
       value: jsonEncode(user.toJson()),
     );
+    print('User saved to storage: ${user}');
   }
 
   /// Returns the cached [UserModel] or null if not logged in.

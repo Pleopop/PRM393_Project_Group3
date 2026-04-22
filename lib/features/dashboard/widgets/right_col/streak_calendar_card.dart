@@ -19,16 +19,8 @@ class _StreakCalendarCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              icon: const Icon(
-                Icons.chevron_left_rounded,
-                size: 20,
-                color: _textSub,
-              ),
-              onPressed: () {},
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-            ),
+            const SizedBox(width: 32),
+
             Text(
               monthTitle,
               style: const TextStyle(
@@ -38,16 +30,7 @@ class _StreakCalendarCard extends StatelessWidget {
                 letterSpacing: 1.0,
               ),
             ),
-            IconButton(
-              icon: const Icon(
-                Icons.chevron_right_rounded,
-                size: 20,
-                color: _textSub,
-              ),
-              onPressed: () {},
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-            ),
+            const SizedBox(width: 32),
           ],
         ),
 

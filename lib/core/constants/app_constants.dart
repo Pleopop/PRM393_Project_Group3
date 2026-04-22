@@ -2,7 +2,7 @@ class AppConstants {
   AppConstants._();
 
   // API
-  static const String baseUrl = 'https://65e9-42-112-141-205.ngrok-free.app';
+  static const String baseUrl = 'https://52.65.122.242:8080';
   static const Duration connectTimeout = Duration(seconds: 10);
   static const Duration receiveTimeout = Duration(seconds: 15);
 

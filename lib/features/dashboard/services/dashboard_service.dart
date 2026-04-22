@@ -1,7 +1,7 @@
 import '../../../core/api/api_client.dart';
 import '../models/overview_model.dart';
 
-bool isMockAPI = true;
+bool isMockAPI = false;
 
 class DashboardService {
   final _api = ApiClient().dio;
@@ -12,7 +12,7 @@ class DashboardService {
       return OverviewModel.fromJson(_buildMockOverviewPayload());
     }
 
-    final response = await _api.get('/dashboard/me');
+    final response = await _api.get('/api/dashboard/me');
     final data = response.data as Map<String, dynamic>;
     return OverviewModel.fromJson(data);
   }
